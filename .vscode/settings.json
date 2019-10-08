@@ -1,0 +1,13 @@
+{
+  "python.pythonPath": "C:\\Users\\Akshay Kumar\\AppData\\Local\\Programs\\Python\\Python37-32",
+  "editor.formatOnSave": true,
+  "python.linting.pep8Enabled": true,
+  "python.linting.pylintPath": "pylint",
+  "python.linting.pylintArgs": ["--load-plugins", "pylint_django"],
+  "python.linting.pylintEnabled": true,
+  "python.venvPath": "${workspaceFolder}/backend/venv/Scripts/python",
+  "python.linting.pep8Args": ["--ignore=E501"],
+  "files.exclude": {
+    "**/*.pyc": true
+  }
+}
