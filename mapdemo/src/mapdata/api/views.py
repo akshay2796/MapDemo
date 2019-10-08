@@ -12,8 +12,8 @@ def map_data(request):
     {"from_location": "location","to_location": "location"}
     """
     if request.method == 'POST':
-        from_location = request.data['from_location']
         to_location = request.data['to_location']
+        from_location = request.data['from_location']
 
         item = MapInfo(from_location=from_location, to_location=to_location)
         item.save()

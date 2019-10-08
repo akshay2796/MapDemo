@@ -121,7 +121,7 @@ class App extends Component {
 		const query = this.fromLatLng + ';' + this.toLatLng;
 		await this.fetchNavData(query);
 
-		await this.postLocationData(from, to);
+		await this.postLocationData(this.from, this.to);
 
 		this.mapRemoveLayer();
 
