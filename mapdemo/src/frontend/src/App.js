@@ -1,17 +1,11 @@
-import React, {
-	Component
-} from 'react';
+import React, { Component } from 'react';
+import ReactDOM from 'react-dom';
+import { Button, Form, FormGroup, Input } from 'reactstrap';
+import MapGL, { MapContext } from '@urbica/react-map-gl';
+
+//CSS Files
 import './App.css';
 import 'bootstrap/dist/css/bootstrap.min.css';
-import {
-	Button,
-	Form,
-	FormGroup,
-	Input
-} from 'reactstrap';
-import MapGL, {
-	MapContext
-} from '@urbica/react-map-gl';
 
 const accessToken =
 	'&access_token=pk.eyJ1IjoiYWtzaGF5Mjc5NiIsImEiOiJjazFjbGY2emwwNGZpM25scDcwMjNzMXhlIn0.-D54L9tbYqRfBSaXWgJbrA';
@@ -32,7 +26,7 @@ var mapRef;
 var from, fromLat, fromLng, fromLatLng;
 var to, toLat, toLng, toLatLng;
 
-export default class MapContainer extends Component {
+class App extends Component {
 
 	setFrom = event => {
 		var fromText = event.target.value;
@@ -256,3 +250,5 @@ export default class MapContainer extends Component {
 		);
 	}
 }
+
+ReactDOM.render(<App />, document.getElementById('root'));
