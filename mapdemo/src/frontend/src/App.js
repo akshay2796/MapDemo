@@ -127,7 +127,7 @@ export default class MapContainer extends Component {
 		const query = this.fromLatLng + ';' + this.toLatLng;
 		await this.fetchNavData(query);
 
-		//await this.postLocationData(from, to);
+		await this.postLocationData(from, to);
 
 		this.mapRemoveLayer();
 
@@ -184,7 +184,7 @@ export default class MapContainer extends Component {
 			from_location: from,
 			to_location: to
 		}
-		fetch('http://127.0.0.1:8000/api/map-data/', {
+		fetch('/api/map-data/', {
 				method: 'POST',
 				headers: {
 					'Content-Type': 'application/json'
@@ -197,82 +197,62 @@ export default class MapContainer extends Component {
 
 
 	render() {
-		return ( <
-			div className = 'App d-flex flex-column align-items-center mt-4' >
-			<
-			div className = 'd-flex align-items-center justify-content-center text-center' >
-			<
-			Form >
-			<
-			FormGroup >
-			<
-			Input type = 'text'
-			name = 'from_location'
-			id = 'fromInput'
-			placeholder = 'Enter Starting Point'
-			onChange = {
-				this.setFrom
-			}
-			/> <
-			/FormGroup> <
-			FormGroup >
-			<
-			Input type = 'text'
-			name = 'to_location'
-			id = 'toInput'
-			placeholder = 'Enter Destination Point'
-			onChange = {
-				this.setTo
-			}
-			/> <
-			/FormGroup> <
-			div >
-			<
-			Button color = 'primary'
-			className = 'mr-3'
-			onClick = {
-				this.submit
-			} >
-			Submit <
-			/Button> <
-			Button color = 'primary'
-			className = 'mx-auto'
-			onClick = {
-				this.mapRemoveLayer
-			} >
-			Clear <
-			/Button> <
-			/div> <
-			/Form> <
-			/div> <
-			MapGL {
-				...viewport
-			}
-			style = {
-				{
-					width: '95%',
-					height: '80%',
-					marginTop: 30
-				}
-			}
-			mapStyle = 'mapbox://styles/mapbox/light-v9'
-			accessToken = {
-				'pk.eyJ1IjoiYWtzaGF5Mjc5NiIsImEiOiJjazFjbGphcGcwbTQyM2Rtd2oxZW9tYWRuIn0.0UVb63pN3wW_LIsQWpECIw'
-			}
-			onViewportChange = {
-				viewport => {
-					this.viewport = viewport;
-				}
-			} >
-			<
-			MapContext.Consumer > {
-				(map) => {
-					mapRef = map;
-				}
-			} <
-			/MapContext.Consumer> <
-			/MapGL> <
-			/div>
+		return (
+			<div className='App d-flex flex-column align-items-center mt-4'>
+				<div className='d-flex align-items-center justify-content-center text-center'>
+					<Form>
+						<FormGroup>
+							<Input
+								type='text'
+								name='from_location'
+								id='fromInput'
+								placeholder='Enter Starting Point'
+								onChange={this.setFrom}
+							/>
+						</FormGroup>
+						<FormGroup>
+							<Input
+								type='text'
+								name='to_location'
+								id='toInput'
+								placeholder='Enter Destination Point'
+								onChange={this.setTo}
+							/>
+						</FormGroup>
+						<div>
+						<Button
+							color='primary'
+							className='mr-3'
+							onClick={this.submit}
+						>
+							Submit
+						</Button>
+						<Button
+							color='primary'
+							className='mx-auto'
+							onClick={this.mapRemoveLayer}
+						>
+							Clear
+						</Button>
+						</div>
+					</Form>
+				</div>
+				<MapGL
+					{...viewport}
+					style={{ width: '95%', height: '80%', marginTop: 30 }}
+					mapStyle='mapbox://styles/mapbox/light-v9'
+					accessToken={
+						'pk.eyJ1IjoiYWtzaGF5Mjc5NiIsImEiOiJjazFjbGphcGcwbTQyM2Rtd2oxZW9tYWRuIn0.0UVb63pN3wW_LIsQWpECIw'
+					}
+					onViewportChange={viewport => {
+						this.viewport = viewport;
+					}}
+            	>
+                    <MapContext.Consumer>
+                        {(map) => {mapRef = map;}}
+                    </MapContext.Consumer>
+            	</MapGL>
+			</div>
 		);
 	}
 }
