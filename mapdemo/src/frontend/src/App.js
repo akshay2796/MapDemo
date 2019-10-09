@@ -162,11 +162,10 @@ class App extends Component {
 			}
 		});
 
-		mapRef.flyTo({
-			center: [(this.fromLat + this.toLat) / 2, (this.fromLng + this.toLng) / 2],
-			zoom: 12,
-			duration: 4000
-		})
+		var bbox = [[this.fromLat, this.fromLng], [this.toLat, this.toLng]];
+		mapRef.fitBounds(bbox, {
+			padding: { top: 100, bottom: 100, left: 100, right: 100 },
+		});
 	}
 
 	getRandomInt = (max) => {
