@@ -1,11 +1,10 @@
-import React, { Component } from 'react';
-import ReactDOM from 'react-dom';
+import React, { Component, Fragment } from 'react';
 import { Button, Form, FormGroup, Input } from 'reactstrap';
-import MapGL, { MapContext } from '@urbica/react-map-gl';
+import MapGL, { MapContext, Marker } from '@urbica/react-map-gl';
 
-//CSS Files
-import './App.css';
+//CSS
 import 'bootstrap/dist/css/bootstrap.min.css';
+import 'mapbox-gl/dist/mapbox-gl.css';
 
 const accessToken =
 	'&access_token=pk.eyJ1IjoiYWtzaGF5Mjc5NiIsImEiOiJjazFjbGY2emwwNGZpM25scDcwMjNzMXhlIn0.-D54L9tbYqRfBSaXWgJbrA';
@@ -18,16 +17,23 @@ var viewport = {
 	zoom: 12,
 };
 
+const markerStyle = {
+	padding: '10px',
+	color: '#fff',
+	cursor: 'pointer',
+	background: '#1978c8',
+	borderRadius: '6px'
+  };
+  
+
 var navFullData;
-var navArray = [];
 
 var mapRef;
 
 var from, fromLat, fromLng, fromLatLng;
 var to, toLat, toLng, toLatLng;
 
-class App extends Component {
-
+export default class MapContainer extends Component {
 	setFrom = event => {
 		var fromText = event.target.value;
 		this.from = fromText;
@@ -55,7 +61,7 @@ class App extends Component {
 				this.fromLat = lat;
 				this.fromLng = lng;
 
-				this.fromLatLng = lat + "," + lng;
+				this.fromLatLng = lat + ',' + lng;
 			});
 	};
 
@@ -76,7 +82,7 @@ class App extends Component {
 				this.toLat = lat;
 				this.toLng = lng;
 
-				this.toLatLng = lat + "," + lng;
+				this.toLatLng = lat + ',' + lng;
 			});
 	};
 
@@ -93,7 +99,7 @@ class App extends Component {
 			.then(data => {
 				navData = data.routes[0].geometry.coordinates;
 
-				navArray = [];
+				var navArray = [];
 				navData.map((item, key) => {
 					navArray.push('[' + item + ']');
 				});
@@ -104,14 +110,10 @@ class App extends Component {
 					']}}';
 
 				navFullData = JSON.parse(jsonUrl);
-
-
 			})
 			.catch(err => {
 				console.error(err);
-				alert('Unable to find Location!')
-				console.log(viewport);
-				mapRef.reload();
+				alert('Unable to find Location!');
 			});
 	};
 
@@ -130,7 +132,6 @@ class App extends Component {
 
 	mapRemoveLayer = () => {
 		try {
-			navArray = [];
 			if (mapRef.getSource('route')) {
 				mapRef.removeLayer('route');
 				mapRef.removeSource('route');
@@ -138,8 +139,7 @@ class App extends Component {
 		} catch (err) {
 			console.log(err);
 		}
-	}
-
+	};
 
 	mapAddLayer = () => {
 		if (mapRef.getSource('route')) {
@@ -149,7 +149,7 @@ class App extends Component {
 
 		mapRef.addSource('route', {
 			type: 'geojson',
-			data: navFullData
+			data: navFullData,
 		});
 
 		mapRef.addLayer({
@@ -159,40 +159,35 @@ class App extends Component {
 			paint: {
 				'line-color': '#336666',
 				'line-width': 6,
-			}
+			},
 		});
 
 		var bbox = [[this.fromLat, this.fromLng], [this.toLat, this.toLng]];
 		mapRef.fitBounds(bbox, {
 			padding: { top: 100, bottom: 100, left: 100, right: 100 },
 		});
-	}
-
-	getRandomInt = (max) => {
-		return Math.floor(Math.random() * Math.floor(max));
-	}
+	};
 
 	postLocationData = async (from, to) => {
 		const data = {
 			from_location: from,
-			to_location: to
-		}
+			to_location: to,
+		};
 		fetch('/api/map-data/', {
-				method: 'POST',
-				headers: {
-					'Content-Type': 'application/json'
-				},
-				body: JSON.stringify(data)
-			})
-			.then((res) => console.log(res))
-			.catch((error) => console.error(error));
-	}
-
+			method: 'POST',
+			headers: {
+				'Content-Type': 'application/json',
+			},
+			body: JSON.stringify(data),
+		})
+			.then(res => console.log(res))
+			.catch(error => console.error(error));
+	};
 
 	render() {
 		return (
-			<div className='App d-flex flex-column align-items-center mt-4'>
-				<div className='d-flex align-items-center justify-content-center text-center'>
+			<div className='d-flex flex-column align-items-center'>
+				<div className='text-center mt-4 mb-4'>
 					<Form>
 						<FormGroup>
 							<Input
@@ -213,41 +208,41 @@ class App extends Component {
 							/>
 						</FormGroup>
 						<div>
-						<Button
-							color='primary'
-							className='mr-3'
-							onClick={this.submit}
-						>
-							Submit
-						</Button>
-						<Button
-							color='primary'
-							className='mx-auto'
-							onClick={this.mapRemoveLayer}
-						>
-							Clear
-						</Button>
+							<Button
+								color='primary'
+								className="mr-3"
+								onClick={this.submit}
+							>
+								Submit
+							</Button>
+							<Button
+								color='primary'
+								onClick={this.mapRemoveLayer}
+							>
+								Clear
+							</Button>
 						</div>
 					</Form>
 				</div>
 				<MapGL
 					{...viewport}
-					style={{ width: '95%', height: '80%', marginTop: 30 }}
-					mapStyle='mapbox://styles/mapbox/light-v9'
+					style={{width: '98vw', height: '78vh'}}
+					// mapStyle='mapbox://styles/mapbox/light-v9'
+					mapStyle='mapbox://styles/mapbox/streets-v11'
 					accessToken={
 						'pk.eyJ1IjoiYWtzaGF5Mjc5NiIsImEiOiJjazFjbGphcGcwbTQyM2Rtd2oxZW9tYWRuIn0.0UVb63pN3wW_LIsQWpECIw'
 					}
 					onViewportChange={viewport => {
 						this.viewport = viewport;
 					}}
-            	>
-                    <MapContext.Consumer>
-                        {(map) => {mapRef = map;}}
-                    </MapContext.Consumer>
-            	</MapGL>
+				>
+					<MapContext.Consumer>
+						{map => {
+							mapRef = map;
+						}}
+					</MapContext.Consumer>
+				</MapGL>
 			</div>
 		);
 	}
 }
-
-ReactDOM.render(<App />, document.getElementById('root'));
