@@ -15,9 +15,13 @@ This is a simple implementation of the [Mapbox JS API](https://www.mapbox.com/) 
 > git clone https://github.com/akshay2796/MapDemo.git
 - Go to the MapDemo folder and open CMD in it and execute the following commands in order:-
 > cd mapdemo
+
 > venv\Scripts\activate
+
 > cd src
+
 > python manage.py runserver
+
 - The Django server will start and the URL will be displayed on the console.
 - Copy the URL and open it in the Browser.
 - Enter the source and destination and click on submit to get the navigation details.
