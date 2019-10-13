@@ -23,7 +23,7 @@ This is a simple implementation of the [Mapbox JS API](https://www.mapbox.com/) 
 > python manage.py runserver
 
 - The Django server will start and the URL will be displayed on the console.
-- Copy the URL and open it in the Browser.
+- Copy the URL or [Click This Link](http://127.0.0.1:8000/) and open it in the Browser.
 - Enter the source and destination and click on submit to get the navigation details.
 - Clear button will clear the navigation on the map.
 
